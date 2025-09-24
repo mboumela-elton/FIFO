@@ -31,7 +31,7 @@ BEGIN
             reset  => reset,
             enable => enable,
             ud     => ud,
-            cptr   => cptr
+            Q   => cptr
         );
 
     -- Cycle counter process

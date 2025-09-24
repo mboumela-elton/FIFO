@@ -1,5 +1,6 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
+USE work.my_package.ALL;
 
 ENTITY div2_tb IS
 END div2_tb;
