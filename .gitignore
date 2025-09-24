@@ -1,0 +1,52 @@
+# ModelSim / QuestaSim simulation files
+*.wlf
+*.vstf
+*.vcd
+*.asdb
+*.sdf
+*.ucdb
+*.log
+*.rpt
+*.dat
+*.svf
+*.vhw
+*.vho
+*.vcd
+*.vpd
+*.do
+*.ini
+*.bak
+*.db
+*.idx
+*.mif
+*.hex
+
+# Work library and simulation cache
+work/
+modelsim.ini
+transcript
+vsim.wlf
+vsim.db
+vsim.saif
+vsim_stacktrace.vstf
+*.vst
+*.vstf
+*.vlib
+
+# Quartus-generated simulation folders (if used)
+simulation/
+db/
+incremental_db/
+*.qdb
+
+# Temporary files
+*.~*
+*~
+*.swp
+*.swo
+*.tmp
+*.temp
+
+# OS-specific
+.DS_Store
+Thumbs.db

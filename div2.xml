@@ -1,0 +1,16 @@
+<interfaceDefinition version='1.2' language='vhdl' kind='component' name='div2'>
+  <useClause path='ieee.std_logic_1164.all' />
+    <macroList>
+
+      <macro name='delay_time' type='TIME' kind='' baseType='physical' initializer='2 ns' />
+
+    </macroList>
+    <portList>
+
+      <port name='clk_in' direction='in' type='STD_LOGIC' kind='' />
+      <port name='reset' direction='in' type='STD_LOGIC' kind='' />
+      <port name='enable' direction='in' type='STD_LOGIC' kind='' />
+      <port name='clk_out' direction='out' type='STD_LOGIC' kind='' />
+
+    </portList>
+</interfaceDefinition>
