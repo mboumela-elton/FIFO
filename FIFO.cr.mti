@@ -1,10 +1,12 @@
-C:/Users/user/Documents/vhdl_workspace/TP1/my_package.vhd {1 {vcom -work work -2002 -explicit C:/Users/user/Documents/vhdl_workspace/TP1/my_package.vhd
+C:/Users/user/Documents/vhdl_workspace/TP1/genaddr.vhd {1 {vcom -work work -2002 -explicit C:/Users/user/Documents/vhdl_workspace/TP1/genaddr.vhd
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Loading package STANDARD
 -- Loading package TEXTIO
 -- Loading package std_logic_1164
 -- Loading package NUMERIC_STD
--- Compiling package my_package
+-- Loading package my_package
+-- Compiling entity genaddr
+-- Compiling architecture Behavioral of genaddr
 
 } {} {}} C:/Users/user/Documents/vhdl_workspace/TP1/div2.vhd {1 {vcom -work work -2002 -explicit C:/Users/user/Documents/vhdl_workspace/TP1/div2.vhd
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
@@ -13,6 +15,35 @@ Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Loading package std_logic_1164
 -- Compiling entity div2
 -- Compiling architecture behavior of div2
+
+} {} {}} C:/Users/user/Documents/vhdl_workspace/TP1/genhl.vhd {1 {vcom -work work -2002 -explicit C:/Users/user/Documents/vhdl_workspace/TP1/genhl.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package my_package
+-- Compiling entity genhl
+-- Compiling architecture behavior of genhl
+
+} {} {}} C:/Users/user/Documents/vhdl_workspace/TP1/genaddr_tb.vhd {1 {vcom -work work -2002 -explicit C:/Users/user/Documents/vhdl_workspace/TP1/genaddr_tb.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package my_package
+-- Compiling entity genaddr_tb
+-- Compiling architecture genaddr_tb_arch of genaddr_tb
+
+} {} {}} C:/Users/user/Documents/vhdl_workspace/TP1/cptdcpt.vhd {1 {vcom -work work -2002 -explicit C:/Users/user/Documents/vhdl_workspace/TP1/cptdcpt.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity cptdcpt
+-- Compiling architecture archi of cptdcpt
 
 } {} {}} C:/Users/user/Documents/vhdl_workspace/TP1/RAM_2pMxNbits.vhd {1 {vcom -work work -2002 -explicit C:/Users/user/Documents/vhdl_workspace/TP1/RAM_2pMxNbits.vhd
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
@@ -23,12 +54,47 @@ Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Compiling entity ram
 -- Compiling architecture rtl of ram
 
-} {} {}} div2_tb.vhd {1 {vcom -work work -2002 -explicit C:/Users/user/Documents/vhdl_workspace/TP1/div2_tb.vhd
+} {} {}} C:/Users/user/Documents/vhdl_workspace/TP1/cptdcpt_tb.vhd {1 {vcom -work work -2002 -explicit C:/Users/user/Documents/vhdl_workspace/TP1/cptdcpt_tb.vhd
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Loading package STANDARD
 -- Loading package TEXTIO
 -- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package my_package
+-- Compiling entity cptdcpt_tb
+-- Compiling architecture cptdcpt_tb_arch of cptdcpt_tb
+
+} {} {}} div2_tb.vhd {0 {vcom -work work -2002 -explicit C:/Users/user/Documents/vhdl_workspace/TP1/div2_tb.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package my_package
 -- Compiling entity div2_tb
 -- Compiling architecture div2_tb_arch of div2_tb
+** Error: C:/Users/user/Documents/vhdl_workspace/TP1/div2_tb.vhd(27): (vcom-1484) Unknown formal identifier "enable".
+
+** Error: C:/Users/user/Documents/vhdl_workspace/TP1/div2_tb.vhd(71): VHDL Compiler exiting
+
+} {10.0 11.0 12.0 13.0} {}} genhl_tb.vhd {1 {vcom -work work -2002 -explicit C:/Users/user/Documents/vhdl_workspace/TP1/genhl_tb.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package my_package
+-- Compiling entity genhl_tb
+-- Compiling architecture genhl_tb_arch of genhl_tb
+
+} {} {}} RAM_2pMxNbits_tb.vhd {1 {vcom -work work -2002 -explicit C:/Users/user/Documents/vhdl_workspace/TP1/RAM_2pMxNbits_tb.vhd
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Loading package my_package
+-- Compiling entity RAM_2pMxNbits
+-- Compiling architecture RAM_2pMxNbits_arch of RAM_2pMxNbits
 
 } {} {}}

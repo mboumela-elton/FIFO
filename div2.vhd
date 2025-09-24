@@ -31,4 +31,3 @@ BEGIN
     clk_out <= clk_reg AFTER delay_time;
 
 END behavior;
-
