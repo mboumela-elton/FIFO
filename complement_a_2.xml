@@ -1,0 +1,16 @@
+<interfaceDefinition version='1.2' language='vhdl' kind='component' name='complement_a_2'>
+  <useClause path='work.mes_fonctions.all' />
+  <useClause path='work.my_package.all' />
+  <useClause path='ieee.std_logic_1164.all' />
+    <macroList>
+
+      <macro name='N' type='INTEGER' kind='' baseType='integer' initializer='8' />
+
+    </macroList>
+    <portList>
+
+      <port name='nombre' direction='in' type='std_logic_vector (N - 1 downto 0)' kind='array' library='work' package='complement_a_2' packedDimension=' (N - 1 downto 0)' />
+      <port name='sortie' direction='out' type='std_logic_vector (N - 1 downto 0)' kind='array' library='work' package='complement_a_2' packedDimension=' (N - 1 downto 0)' />
+
+    </portList>
+</interfaceDefinition>

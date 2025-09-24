@@ -1,91 +1,5 @@
--------------------------------------------------------------------------
--- my_package.vhd
 
-LIBRARY ieee;
-USE ieee.std_logic_1164.ALL;
-USE ieee.numeric_std.ALL;
-
-PACKAGE my_package IS
-
-    COMPONENT div2
-        GENERIC (
-            delay_time : TIME
-        );
-        PORT (
-            clk_in   : IN  STD_LOGIC;
-            reset    : IN  STD_LOGIC;
-            enable   : IN  STD_LOGIC;
-            clk_out  : OUT STD_LOGIC
-        );
-    END COMPONENT;
-    
-    COMPONENT ram
-        GENERIC (
-            M : INTEGER;
-            N : INTEGER
-        );
-        PORT (
-            clk   : IN  STD_LOGIC;
-            CS_n  : IN  STD_LOGIC;
-            RW_n  : IN  STD_LOGIC;
-            OE    : IN  STD_LOGIC;
-            addr  : IN  INTEGER;
-            Din   : IN  STD_LOGIC_VECTOR(N-1 DOWNTO 0);
-            Dout  : OUT STD_LOGIC_VECTOR(N-1 DOWNTO 0)
-        );
-    END COMPONENT;
-    
-    
-    COMPONENT genhl
-    PORT (
-        reset    : IN  STD_LOGIC;
-        clk      : IN  STD_LOGIC;
-        enread   : OUT STD_LOGIC;
-        enwrite  : OUT STD_LOGIC
-    );
-    END COMPONENT;
-
-
-    COMPONENT cptdcpt
-        GENERIC (
-            M : integer := 8
-        );
-        PORT (
-            RESET    : in  std_logic;
-            CLK      : in  std_logic;
-            ENABLE   : in  std_logic;
-            UD       : in  std_logic;
-            Q        : out std_logic_vector(M-1 downto 0)
-        );
-    END COMPONENT cptdcpt;
-
-    COMPONENT genaddr
-    GENERIC (
-        M : integer := 4  -- largeur de l'adresse
-    );
-    PORT (
-        RESET       : in  std_logic;
-        CLK         : in  std_logic;
-        incRead     : in  std_logic;
-        incWrite    : in  std_logic;
-        selectRead  : in  std_logic;
-        Addrgen     : out std_logic_vector(M-1 downto 0)
-    );
-    END COMPONENT genaddr;
-
-    COMPONENT complement_a_2
-    GENERIC (
-        N : INTEGER := 8
-    );
-    PORT ( 
-        nombre      : in STD_LOGIC_VECTOR (N-1 downto 0);
-        sortie      : out STD_LOGIC_VECTOR (N-1 downto 0)
-    );
-    END COMPONENT complement_a_2;
-
-
-END my_package;
--------------------------------------------------------------------------
+-- mon_paquetage.vhd
 library ieee ;
 use ieee.std_logic_1164.all ;
 use ieee.std_logic_unsigned.all ;
@@ -169,7 +83,7 @@ procedure check_hold(
 				variable t : time;
 begin
 	loop
-		wait until clk = '1';
+		wait unil clk = '1';
 		t := now;
 		if t >= hdeb and t <= hfin then 
 			if din'event = false then
@@ -185,3 +99,5 @@ begin
 
 End CHECK_PKG;
 --------------------------------------------------------------------------
+
+
