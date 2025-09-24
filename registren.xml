@@ -1,0 +1,20 @@
+<interfaceDefinition version='1.2' language='vhdl' kind='component' name='registreN'>
+  <useClause path='work.CHECK_PKG.all' />
+  <useClause path='ieee.NUMERIC_STD.all' />
+  <useClause path='ieee.std_logic_1164.all' />
+    <macroList>
+
+      <macro name='N' type='INTEGER' kind='' baseType='integer' initializer='8' />
+      <macro name='T_SETUP' type='TIME' kind='' baseType='physical' initializer='5 ns' />
+      <macro name='T_HOLD' type='TIME' kind='' baseType='physical' initializer='2 ns' />
+
+    </macroList>
+    <portList>
+
+      <port name='CLK' direction='in' type='STD_LOGIC' kind='' />
+      <port name='RESET' direction='in' type='STD_LOGIC' kind='' />
+      <port name='D' direction='in' type='std_logic_vector (N - 1 downto 0)' kind='array' library='work' package='registreN' packedDimension=' (N - 1 downto 0)' />
+      <port name='Q' direction='out' type='std_logic_vector (N - 1 downto 0)' kind='array' library='work' package='registreN' packedDimension=' (N - 1 downto 0)' />
+
+    </portList>
+</interfaceDefinition>
