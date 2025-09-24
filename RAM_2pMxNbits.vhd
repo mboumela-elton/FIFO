@@ -4,51 +4,51 @@ USE ieee.numeric_std.ALL;
 
 ENTITY ram IS
     GENERIC (
-        M : INTEGER := 8;  -- Number of memory words (depth)
-        N : INTEGER := 4   -- Size of each word in bits (width)
+        M : INTEGER := 8;  -- Nombre de mots (profondeur mémoire)
+        N : INTEGER := 4      -- Taille d?un mot (largeur en bits)
     );
     PORT (
-        clk    : IN  STD_LOGIC;                         -- Clock signal
-        CS_n   : IN  STD_LOGIC;                         -- Chip Select (active low)
-        RW_n   : IN  STD_LOGIC;                         -- Read/Write control (0 = write, 1 = read)
-        OE     : IN  STD_LOGIC;                         -- Output Enable (controls output during read)
-        addr   : IN  INTEGER RANGE 0 TO M-1;            -- Address of the word to read or write
-        Din    : IN  STD_LOGIC_VECTOR(N-1 DOWNTO 0);    -- Data input for write operations
-        Dout   : OUT STD_LOGIC_VECTOR(N-1 DOWNTO 0)     -- Data output or high impedance
+        clk    : IN  STD_LOGIC;                         -- Horloge
+        CS_n   : IN  STD_LOGIC;                         -- Chip Select (actif bas)
+        RW_n   : IN  STD_LOGIC;                         -- Read/Write (0 = write, 1 = read)
+        OE     : IN  STD_LOGIC;                         -- Output Enable (active la sortie en lecture)
+        addr   : IN  INTEGER RANGE 0 TO M-1;            -- Adresse du mot à lire ou écrire
+        Din    : IN  STD_LOGIC_VECTOR(N-1 DOWNTO 0);    -- Données à écrire
+        Dout   : OUT STD_LOGIC_VECTOR(N-1 DOWNTO 0)     -- Données lues ou haute impédance
     );
 END ram;
 
 ARCHITECTURE rtl OF ram IS
 
-    -- Memory type: array of M words, each N bits wide
+    -- Définition du type mémoire : tableau de M mots de N bits
     TYPE ram_type IS ARRAY (0 TO M-1) OF STD_LOGIC_VECTOR(N-1 DOWNTO 0);
 
-    -- Internal signal representing the memory contents
+    -- Signal interne représentant la mémoire
     SIGNAL mem : ram_type := (OTHERS => (OTHERS => '0'));
 
-    -- Temporary register to hold the read data
+    -- Registre temporaire pour stocker la donnée lue
     SIGNAL dout_reg : STD_LOGIC_VECTOR(N-1 DOWNTO 0);
 
 BEGIN
 
-    -- Main process: handles read and write operations on clock rising edge
+    -- Processus principal : lecture ou écriture synchronisée sur l?horloge
     PROCESS(clk)
     BEGIN
         IF rising_edge(clk) THEN
-            IF CS_n = '0' THEN  -- Memory is enabled
+            IF CS_n = '0' THEN  -- Mémoire activée
                 IF RW_n = '0' THEN
-                    -- Write mode: store Din at the specified address
+                    -- Mode écriture : stocker Din à l?adresse addr
                     mem(addr) <= Din;
                 ELSIF RW_n = '1' THEN
-                    -- Read mode: load data from memory into dout_reg
+                    -- Mode lecture : lire la donnée à addr dans dout_reg
                     dout_reg <= mem(addr);
                 END IF;
             END IF;
         END IF;
     END PROCESS;
 
-    -- Conditional output: active only during read with OE = '1'
+    -- Sortie conditionnelle : active uniquement si lecture + OE = '1'
     Dout <= dout_reg WHEN (CS_n = '0' AND RW_n = '1' AND OE = '1')
-           ELSE (OTHERS => 'Z');  -- Otherwise, output is high impedance
+           ELSE (OTHERS => 'Z');  -- Sinon, sortie en haute impédance
 
 END rtl;

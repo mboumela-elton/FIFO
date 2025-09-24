@@ -1,0 +1,19 @@
+<interfaceDefinition version='1.2' language='vhdl' kind='component' name='genaddr'>
+  <useClause path='ieee.NUMERIC_STD.all' />
+  <useClause path='ieee.std_logic_1164.all' />
+    <macroList>
+
+      <macro name='M' type='INTEGER' kind='' baseType='integer' initializer='8' />
+
+    </macroList>
+    <portList>
+
+      <port name='RESET' direction='in' type='STD_LOGIC' kind='' />
+      <port name='CLK' direction='in' type='STD_LOGIC' kind='' />
+      <port name='incRead' direction='in' type='STD_LOGIC' kind='' />
+      <port name='incWrite' direction='in' type='STD_LOGIC' kind='' />
+      <port name='selectRead' direction='in' type='STD_LOGIC' kind='' />
+      <port name='Adrgen' direction='out' type='std_logic_vector (M - 1 downto 0)' kind='array' library='work' package='genaddr' packedDimension=' (M - 1 downto 0)' />
+
+    </portList>
+</interfaceDefinition>

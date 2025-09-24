@@ -1,6 +1,7 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
+USE work.my_package.ALL;
 
 ENTITY RAM_2pMxNbits IS
     GENERIC (
@@ -21,22 +22,6 @@ ARCHITECTURE RAM_2pMxNbits_arch OF RAM_2pMxNbits IS
     SIGNAL s_addr   : INTEGER RANGE 0 TO M-1 := 0;
     SIGNAL s_Din    : STD_LOGIC_VECTOR(N-1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL s_Dout   : STD_LOGIC_VECTOR(N-1 DOWNTO 0);
-
-    COMPONENT ram
-        GENERIC (
-            M : INTEGER;
-            N : INTEGER
-        );
-        PORT (
-            clk   : IN  STD_LOGIC;
-            CS_n  : IN  STD_LOGIC;
-            RW_n  : IN  STD_LOGIC;
-            OE    : IN  STD_LOGIC;
-            addr  : IN  INTEGER;
-            Din   : IN  STD_LOGIC_VECTOR(N-1 DOWNTO 0);
-            Dout  : OUT STD_LOGIC_VECTOR(N-1 DOWNTO 0)
-        );
-    END COMPONENT;
 
 BEGIN
 

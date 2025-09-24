@@ -7,24 +7,24 @@ entity cptdcpt is
         M : integer := 8  -- Largeur du compteur
     );
     port (
-        clk     : in  std_logic;
-        reset   : in  std_logic;         -- Reset synchrone
-        enable  : in  std_logic;         -- Validation
-        ud      : in  std_logic;         -- 1: incrémente, 0: décrémente
-        cptr       : out std_logic_vector(M-1 downto 0)
+        CLK     : in  std_logic;
+        RESET   : in  std_logic;         
+        ENABLE  : in  std_logic;         -- Validation
+        UD      : in  std_logic;         -- 1: incrémente, 0: décrémente
+        Q    : out std_logic_vector(M-1 downto 0)
     );
 end entity cptdcpt;
 
 architecture archi of cptdcpt is
     signal cnt : unsigned(M-1 downto 0) := (others => '0');
 begin
-    process(clk)
+    process(CLK)
     begin
-        if rising_edge(clk) then
-            if reset = '1' then
+        if rising_edge(CLK) then
+            if RESET = '1' then
                 cnt <= (others => '0');
-            elsif enable = '1' then
-                if ud = '1' then
+            elsif ENABLE = '1' then
+                if UD = '1' then
                     cnt <= cnt + 1;
                 else
                     cnt <= cnt - 1;
@@ -33,5 +33,5 @@ begin
         end if;
     end process;
 
-    cptr <= std_logic_vector(cnt);
+    Q <= std_logic_vector(cnt);
 end architecture archi;
