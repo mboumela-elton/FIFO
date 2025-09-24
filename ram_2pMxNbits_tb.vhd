@@ -96,16 +96,16 @@ BEGIN
         s_RW_n <= '1';
         s_OE   <= '1';
 
-        -- Read from address 2
-        s_addr <= 2;
-        WAIT FOR s_clk_period;
-
         -- Read from address 0
         s_addr <= 0;
         WAIT FOR s_clk_period;
 
         -- Read from address 1
         s_addr <= 1;
+        WAIT FOR s_clk_period;
+
+        -- Read from address 2
+        s_addr <= 2;
         WAIT FOR s_clk_period;
 
         -- Disable memory
