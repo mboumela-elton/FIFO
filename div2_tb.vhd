@@ -11,18 +11,6 @@ ARCHITECTURE div2_tb_arch OF div2_tb IS
     SIGNAL s_reset    : STD_LOGIC := '0';
     SIGNAL s_enable   : STD_LOGIC := '0';
 
-    COMPONENT div2
-        GENERIC (
-            delay_time : TIME := 1 ns
-        );
-        PORT (
-            clk_in   : IN  STD_LOGIC;
-            clk_out  : OUT STD_LOGIC;
-            reset    : IN  STD_LOGIC;
-            enable   : IN  STD_LOGIC
-        );
-    END COMPONENT;
-
     CONSTANT clk_period : TIME := 10 ns;
 
 BEGIN
