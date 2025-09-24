@@ -32,6 +32,8 @@ vsim_stacktrace.vstf
 *.vst
 *.vstf
 *.vlib
+FIFO.mpf
+FIFO.cr.mti
 
 # Quartus-generated simulation folders (if used)
 simulation/
@@ -58,4 +60,3 @@ FIFO.cr.mti
 FIFO.mpf
 *.vhd.bak
 *.xml
-*.wlf
