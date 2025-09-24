@@ -83,6 +83,19 @@ PACKAGE my_package IS
     );
     END COMPONENT complement_a_2;
 
+    COMPONENT registreN
+    GENERIC (
+        N : integer := 8;
+        T_SETUP : time := 5 ns;
+        T_HOLD  : time := 2 ns
+    );
+    PORT (
+        CLK   : in  std_logic;
+        RESET : in  std_logic;
+        D     : in  std_logic_vector(N-1 downto 0);
+        Q     : out std_logic_vector(N-1 downto 0)
+    );
+    END COMPONENT registreN;
 
 END my_package;
 -------------------------------------------------------------------------
