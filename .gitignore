@@ -32,8 +32,9 @@ vsim_stacktrace.vstf
 *.vst
 *.vstf
 *.vlib
-FIFO.mpf
-FIFO.cr.mti
+*.mpf
+*.cr.mti
+*.xml
 
 # Quartus-generated simulation folders (if used)
 simulation/
@@ -52,11 +53,3 @@ incremental_db/
 # OS-specific
 .DS_Store
 Thumbs.db
-
-# Computer generated files
-TP_Project_FIFO.mpf
-TP_Project_FIFO.cr.mti
-FIFO.cr.mti
-FIFO.mpf
-*.vhd.bak
-*.xml
