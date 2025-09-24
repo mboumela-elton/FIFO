@@ -50,3 +50,6 @@ incremental_db/
 # OS-specific
 .DS_Store
 Thumbs.db
+
+# Computer generated files
+TP_Project_FIFO.mpf
