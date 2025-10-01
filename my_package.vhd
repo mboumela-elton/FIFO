@@ -188,7 +188,7 @@ begin
 			if din'event = false then
 				wait on din for t_hold;
 			end if;
-			assert din'event = false or (now - t) >= t_hold
+			assert (now - t) >= t_hold or din'event = false
 				report "temps de hold non respecté" severity severite;
 				elsif t > hfin then
 					wait;
