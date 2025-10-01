@@ -91,7 +91,7 @@ BEGIN
             CS_n     <= '0';
             IF (REQ = '1' AND ENWRITE = '0') THEN
                 etat_suivant <= Repos;
-            ELSIF (AND ENREAD = '1') THEN
+            ELSIF (ENREAD = '1') THEN
                 etat_suivant <= Lecture2;
             ELSIF (REQ = '0' AND ENWRITE = '0') THEN
                 etat_suivant <= Attente;
