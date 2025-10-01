@@ -1,56 +1,68 @@
-LIBRARY ieee;
-USE ieee.std_logic_1164.ALL;
-USE ieee.numeric_std.ALL;
-USE work.my_package.ALL;
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+use work.my_package.all;
 
-ENTITY genhl IS
-    PORT (
-        reset    : IN  STD_LOGIC;
-        clk      : IN  STD_LOGIC;
-        enread   : OUT STD_LOGIC;
-        enwrite  : OUT STD_LOGIC
+entity genhl is
+    generic (
+        M : integer := 8  -- Largeur du compteur (doit être >= log2(200) = 8)
     );
-END genhl;
+    port (
+        RESET    : in  std_logic;
+        CLK      : in  std_logic;
+        ENREAD   : out std_logic;
+        ENWRITE  : out std_logic
+    );
+end entity genhl;
 
-ARCHITECTURE behavior OF genhl IS
+architecture Behavioral of genhl is
+    signal cnt_val : std_logic_vector(M-1 downto 0);
+    signal enable_cnt : std_logic := '1';
+    signal enread_int : std_logic := '0';
+begin
 
-    SIGNAL cycle_count : INTEGER := 0;
-    SIGNAL enable       : STD_LOGIC := '0';
-    SIGNAL ud           : STD_LOGIC := '0';
-    SIGNAL cptr         : STD_LOGIC_VECTOR(7 DOWNTO 0);  -- M = 8
-
-BEGIN
-
-    -- Instantiation of the counter-decounter component
-    CreateCpt : cptdcpt
-        GENERIC MAP (
-            M => 8
+    -- Instanciation du compteur
+    compteur_inst : cptdcpt
+        generic map (
+            M => M
         )
-        PORT MAP (
-            clk    => clk,
-            reset  => reset,
-            enable => enable,
-            ud     => ud,
-            Q   => cptr
+        port map (
+            CLK    => CLK,
+            RESET  => RESET,
+            ENABLE => enable_cnt,
+            UD     => '1',  -- Compteur incrémental
+            Q      => cnt_val
         );
+    process(CLK)
+    begin
+        if rising_edge(CLK) then
+            if RESET = '1' then
+                enread_int  <= '0';
+            elsif unsigned(cnt_val) = 199 then
+                enread_int  <= '1';
+            else
+                enread_int  <= '0';
+            end if;
+        end if;
+    end process;
 
-    -- Cycle counter process
-    PROCESS(clk)
-    BEGIN
-        IF rising_edge(clk) THEN
-            IF reset = '1' THEN
-                cycle_count <= 0;
-            ELSE
-                cycle_count <= cycle_count + 1;
-            END IF;
-        END IF;
-    END PROCESS;
+    ENREAD  <= enread_int;
+    ENWRITE <= not enread_int;
 
-    -- Combinational logic for enread and enwrite
-    enread  <= '1' WHEN cycle_count MOD 2 = 0 ELSE '0';   -- Example: read on even cycles
-    enwrite <= '1' WHEN cycle_count MOD 2 = 1 ELSE '0';   -- Example: write on odd cycles
+    -- Remise à zéro du compteur tous les 200 cycles
+    process(CLK)
+    begin
+        if rising_edge(CLK) then
+            if RESET = '1' then
+                -- rien à faire ici, RESET gère déjà le compteur
+                null;
+            elsif unsigned(cnt_val) = 199 then
+                -- Forcer un reset du compteur à la prochaine horloge
+                enable_cnt <= '0';
+            else
+                enable_cnt <= '1';
+            end if;
+        end if;
+    end process;
 
-    -- Reset counter after 200 cycles
-    enable <= '1' WHEN cycle_count < 200 ELSE '0';
-
-END behavior;
+end architecture Behavioral;
