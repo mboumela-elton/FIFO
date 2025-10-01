@@ -4,7 +4,7 @@ USE ieee.numeric_std.ALL;
 
 ENTITY ram IS
     GENERIC (
-        M : INTEGER := 8;  -- Nombre de mots (profondeur mÈmoire)
+        M : INTEGER := 8;  -- Nombre de mots (profondeur m√©moire)
         N : INTEGER := 4      -- Taille d?un mot (largeur en bits)
     );
     PORT (
@@ -12,35 +12,35 @@ ENTITY ram IS
         CS_n   : IN  STD_LOGIC;                         -- Chip Select (actif bas)
         RW_n   : IN  STD_LOGIC;                         -- Read/Write (0 = write, 1 = read)
         OE     : IN  STD_LOGIC;                         -- Output Enable (active la sortie en lecture)
-        addr   : IN  INTEGER RANGE 0 TO M-1;            -- Adresse du mot ‡ lire ou Ècrire
-        Din    : IN  STD_LOGIC_VECTOR(N-1 DOWNTO 0);    -- DonnÈes ‡ Ècrire
-        Dout   : OUT STD_LOGIC_VECTOR(N-1 DOWNTO 0)     -- DonnÈes lues ou haute impÈdance
+        addr   : IN  INTEGER RANGE 0 TO M-1;            -- Adresse du mot √© lire ou √©crire
+        Din    : IN  STD_LOGIC_VECTOR(N-1 DOWNTO 0);    -- Donn√©es √© √©crire
+        Dout   : OUT STD_LOGIC_VECTOR(N-1 DOWNTO 0)     -- Donn√©es lues ou haute imp√©dance
     );
 END ram;
 
 ARCHITECTURE rtl OF ram IS
 
-    -- DÈfinition du type mÈmoire : tableau de M mots de N bits
+    -- D√©finition du type m√©moire : tableau de M mots de N bits
     TYPE ram_type IS ARRAY (0 TO M-1) OF STD_LOGIC_VECTOR(N-1 DOWNTO 0);
 
-    -- Signal interne reprÈsentant la mÈmoire
+    -- Signal interne repr√©sentant la m√©moire
     SIGNAL mem : ram_type := (OTHERS => (OTHERS => '0'));
 
-    -- Registre temporaire pour stocker la donnÈe lue
+    -- Registre temporaire pour stocker la donn√©e lue
     SIGNAL dout_reg : STD_LOGIC_VECTOR(N-1 DOWNTO 0);
 
 BEGIN
 
-    -- Processus principal : lecture ou Ècriture synchronisÈe sur l?horloge
+    -- Processus principal : lecture ou √©criture synchronis√©e sur l?horloge
     PROCESS(clk)
     BEGIN
         IF rising_edge(clk) THEN
-            IF CS_n = '0' THEN  -- MÈmoire activÈe
+            IF CS_n = '0' THEN  -- M√©moire activ√©e
                 IF RW_n = '0' THEN
-                    -- Mode Ècriture : stocker Din ‡ l?adresse addr
+                    -- Mode √©criture : stocker Din √© l?adresse addr
                     mem(addr) <= Din;
                 ELSIF RW_n = '1' THEN
-                    -- Mode lecture : lire la donnÈe ‡ addr dans dout_reg
+                    -- Mode lecture : lire la donn√©e de addr dans dout_reg
                     dout_reg <= mem(addr);
                 END IF;
             END IF;
@@ -49,6 +49,6 @@ BEGIN
 
     -- Sortie conditionnelle : active uniquement si lecture + OE = '1'
     Dout <= dout_reg WHEN (CS_n = '0' AND RW_n = '1' AND OE = '1')
-           ELSE (OTHERS => 'Z');  -- Sinon, sortie en haute impÈdance
+           ELSE (OTHERS => 'Z');  -- Sinon, sortie en haute imp√©dance
 
 END rtl;
