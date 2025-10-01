@@ -202,7 +202,7 @@ begin
 				wait;
 			end if;
 	end if;
-	end loop;	
+    end loop;	
 end check_setup;
 
 procedure check_hold(
