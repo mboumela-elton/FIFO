@@ -51,6 +51,6 @@ BEGIN
     enwrite <= '1' WHEN cycle_count MOD 2 = 1 ELSE '0';   -- Example: write on odd cycles
 
     -- Reset counter after 200 cycles
-    enable <= '1' WHEN cycle_count < 200 ELSE '0';
+    enable <= '1' WHEN cycle_count < 250 ELSE '0';
 
 END behavior;
