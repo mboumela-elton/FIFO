@@ -45,7 +45,7 @@ PACKAGE my_package IS
 
     COMPONENT cptdcpt is
         GENERIC (
-            M : integer := 8
+            M : integer := 4
         );
         PORT (
             RESET    : in  std_logic;
@@ -69,6 +69,19 @@ PACKAGE my_package IS
         Addrgen     : out std_logic_vector(M-1 downto 0)
     );
     END COMPONENT genaddr;
+    
+    COMPONENT fastslow
+    GENERIC (
+            M  : INTEGER := 4
+        );  
+    PORT ( 
+      slow  : out STD_LOGIC ; 
+      incwrite  : in STD_LOGIC ; 
+      fast  : out STD_LOGIC ; 
+      clk  : in STD_LOGIC ; 
+      incread  : in STD_LOGIC ; 
+      reset  : in STD_LOGIC ); 
+    END COMPONENT ;
 
 
 END my_package;
