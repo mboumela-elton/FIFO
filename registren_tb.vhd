@@ -2,7 +2,8 @@ LIBRARY ieee  ;
 LIBRARY work  ; 
 USE ieee.NUMERIC_STD.all  ; 
 USE ieee.std_logic_1164.all  ; 
-USE work.CHECK_PKG.all  ; 
+USE work.CHECK_PKG.all  ;
+ 
 ENTITY registren_tb  IS 
   GENERIC (
     T_SETUP  : TIME   := 5 ns ;  
