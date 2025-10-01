@@ -23,24 +23,6 @@ ARCHITECTURE fifo_tb_arch OF fifo_tb IS
   SIGNAL ack       : STD_LOGIC;
   SIGNAL reset     : STD_LOGIC;
 
-  COMPONENT FIFO
-    GENERIC (
-      M : INTEGER;
-      N : INTEGER
-    );
-    PORT (
-      hl        : out STD_LOGIC;
-      data_in   : in std_logic_vector(N - 1 downto 0);
-      req       : in STD_LOGIC;
-      slow      : out STD_LOGIC;
-      data_out  : out std_logic_vector(N - 1 downto 0);
-      fast      : out STD_LOGIC;
-      clk       : in STD_LOGIC;
-      ack       : out STD_LOGIC;
-      reset     : in STD_LOGIC
-    );
-  END COMPONENT;
-
 BEGIN
 
   -- Instanciation de la FIFO

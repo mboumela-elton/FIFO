@@ -1,54 +1,52 @@
-LIBRARY ieee;
-USE ieee.std_logic_1164.ALL;
-USE ieee.numeric_std.ALL;
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
-ENTITY ram_2pmxnbits IS
-    GENERIC (
-        M : INTEGER := 8;  -- Nombre de mots (profondeur mémoire)
-        N : INTEGER := 3   -- Taille d?un mot (largeur en bits)
+entity ram_2pmxnbits is
+    generic (
+        M : integer := 8;  -- profondeur mémoire (nombre de mots)
+        N : integer := 4   -- largeur d?un mot (en bits)
     );
-    PORT (
-        clk    : IN  STD_LOGIC;                         -- Horloge
-        CS_n   : IN  STD_LOGIC;                         -- Chip Select (actif bas)
-        RW_n   : IN  STD_LOGIC;                         -- Read/Write (0 = write, 1 = read)
-        OE     : IN  STD_LOGIC;                         -- Output Enable (active la sortie en lecture)
-        addr   : IN  STD_LOGIC_VECTOR(M-1 DOWNTO 0); -- Adresse
-        Din    : IN  STD_LOGIC_VECTOR(N-1 DOWNTO 0);    -- Données à écrire
-        Dout   : OUT STD_LOGIC_VECTOR(N-1 DOWNTO 0)     -- Données lues ou haute impédance
+    port (
+        clk    : in  std_logic;                         -- Horloge
+        CS_n   : in  std_logic;                         -- Chip Select (actif bas)
+        RW_n   : in  std_logic;                         -- Read/Write (0 = write, 1 = read)
+        OE     : in  std_logic;                         -- Output Enable (active la sortie en lecture)
+        addr   : in  std_logic_vector(M-1 downto 0); -- requis mais ignoré
+        Din    : in  std_logic_vector(N-1 downto 0);    -- Données à écrire
+        Dout   : out std_logic_vector(N-1 downto 0)     -- Données lues ou haute impédance
     );
-END ram_2pmxnbits;
+end entity;
 
-ARCHITECTURE rtl OF ram_2pmxnbits IS
+architecture rtl of ram_2pmxnbits is
 
-    -- Définition du type mémoire : tableau de M mots de N bits
-    TYPE ram_type IS ARRAY (0 TO M-1) OF STD_LOGIC_VECTOR(N-1 DOWNTO 0);
+    type ram_type is array (0 to M-1) of std_logic_vector(N-1 downto 0);
+    signal mem       : ram_type := (others => (others => '0'));
+    signal dout_reg  : std_logic_vector(N-1 downto 0);
+    signal write_ptr : integer range 0 to M-1 := 0;
+    signal read_ptr  : integer range 0 to M-1 := 0;
 
-    -- Signal interne représentant la mémoire
-    SIGNAL mem : ram_type := (OTHERS => (OTHERS => '0'));
+begin
+  
+    process(clk)
+    begin
+        if rising_edge(clk) then
+            if CS_n = '0' then
+                if RW_n = '0' then
+                    -- Écriture FIFO
+                    mem(write_ptr) <= Din;
+                    write_ptr <= (write_ptr + 1) mod M;
+                elsif RW_n = '1' then
+                    -- Lecture FIFO
+                    dout_reg <= mem(read_ptr);
+                    read_ptr <= (read_ptr + 1) mod M;
+                end if;
+            end if;
+        end if;
+    end process;
 
-    -- Registre temporaire pour stocker la donnée lue
-    SIGNAL dout_reg : STD_LOGIC_VECTOR(N-1 DOWNTO 0);
+    -- Sortie conditionnelle
+    Dout <= dout_reg when (CS_n = '0' and RW_n = '1' and OE = '1')
+           else (others => 'Z');
 
-BEGIN
-
-    -- Processus principal : lecture ou écriture synchronisée sur l?horloge
-    PROCESS(clk)
-    BEGIN
-        IF rising_edge(clk) THEN
-            IF CS_n = '0' THEN  -- Mémoire activée
-                IF RW_n = '0' THEN
-                    -- Mode écriture : stocker Din à l?adresse addr
-                    mem(to_integer(unsigned(addr))) <= Din;
-                ELSIF RW_n = '1' THEN
-                    -- Mode lecture : lire la donnée de addr dans dout_reg
-                    dout_reg <= mem(to_integer(unsigned(addr)));
-                END IF;
-            END IF;
-        END IF;
-    END PROCESS;
-
-    -- Sortie conditionnelle : active uniquement si lecture + OE = '1'
-    Dout <= dout_reg WHEN (CS_n = '0' AND RW_n = '1' AND OE = '1')
-           ELSE (OTHERS => 'Z');  -- Sinon, sortie en haute impédance
-
-END rtl;
+end architecture;
