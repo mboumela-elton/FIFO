@@ -5,8 +5,8 @@ use work.my_package.all;
 
 entity FIFO is
     generic (
-        M : integer := 16; -- profondeur mémoire (nombre de mots)
-        N : integer := 8   -- largeur des données
+        M : integer := 8; -- profondeur mémoire (nombre de mots)
+        N : integer := 4   -- largeur des données
     );
     port (
         clk        : in  std_logic;
@@ -104,14 +104,14 @@ begin
         );
 
     -- Mémoire RAM FIFO
-    U7: ram
+    U7: ram_2pmxnbits
         generic map (M => M, N => N)
         port map (
             clk   => clk,
             CS_n  => CS_n,
             RW_n  => RW_n,
             OE    => OE,
-            addr  => to_integer(unsigned(addr)),
+            addr  => addr,
             Din   => cpl2_out,
             Dout  => data_out
         );

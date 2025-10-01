@@ -19,7 +19,7 @@ PACKAGE my_package IS
         );
     END COMPONENT;
     
-    COMPONENT ram
+    COMPONENT ram_2pmxnbits
         GENERIC (
             M : INTEGER;
             N : INTEGER
@@ -29,7 +29,7 @@ PACKAGE my_package IS
             CS_n  : IN  STD_LOGIC;
             RW_n  : IN  STD_LOGIC;
             OE    : IN  STD_LOGIC;
-            addr  : IN  INTEGER;
+            addr  : IN  STD_LOGIC_VECTOR(M-1 DOWNTO 0);
             Din   : IN  STD_LOGIC_VECTOR(N-1 DOWNTO 0);
             Dout  : OUT STD_LOGIC_VECTOR(N-1 DOWNTO 0)
         );
@@ -75,7 +75,7 @@ PACKAGE my_package IS
     
     COMPONENT fastslow
     GENERIC (
-            M  : INTEGER := 4
+            M  : INTEGER
         );  
     PORT ( 
       slow  : out STD_LOGIC ; 

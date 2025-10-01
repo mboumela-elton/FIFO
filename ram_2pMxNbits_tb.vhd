@@ -1,34 +1,33 @@
 LIBRARY ieee;
+USE ieee.NUMERIC_STD.ALL;
 USE ieee.std_logic_1164.ALL;
-USE ieee.numeric_std.ALL;
 USE work.my_package.ALL;
 
-ENTITY RAM_2pMxNbits IS
-    GENERIC (
-        M : INTEGER := 4;  
-        N : INTEGER := 8 
-    );
-END RAM_2pMxNbits;
+ENTITY ram_2pmxnbits_tb IS 
+  GENERIC ( 
+    M : INTEGER := 8;  -- log2(8) = 3 pour adresser 8 mots 
+    N : INTEGER := 4   -- largeur d?un mot 
+  ); 
+END ram_2pmxnbits_tb;
 
-ARCHITECTURE RAM_2pMxNbits_arch OF RAM_2pMxNbits IS
+ARCHITECTURE ram_2pmxnbits_tb_arch OF ram_2pmxnbits_tb IS
 
-    CONSTANT s_clk_period : TIME := 10 ns;     -- Clock period
-    CONSTANT s_setup_time : TIME := 5 ns;      -- Setup time between RW_n and Din
+    CONSTANT s_clk_period : TIME := 10 ns;
+    CONSTANT s_setup_time : TIME := 5 ns;
 
     SIGNAL s_clk    : STD_LOGIC := '0';
     SIGNAL s_CS_n   : STD_LOGIC := '1';
     SIGNAL s_RW_n   : STD_LOGIC := '1';
     SIGNAL s_OE     : STD_LOGIC := '0';
-    SIGNAL s_addr   : INTEGER RANGE 0 TO M-1 := 0;
+    SIGNAL s_addr   : STD_LOGIC_VECTOR(M-1 DOWNTO 0);
     SIGNAL s_Din    : STD_LOGIC_VECTOR(N-1 DOWNTO 0) := (OTHERS => '0');
     SIGNAL s_Dout   : STD_LOGIC_VECTOR(N-1 DOWNTO 0);
 
 BEGIN
 
-    -- RAM instantiation
-    DUT : ram
+    DUT : ram_2pmxnbits
         GENERIC MAP (
-            M => M,
+            M => M,  -- profondeur mémoire
             N => N
         )
         PORT MAP (
@@ -41,7 +40,6 @@ BEGIN
             Dout  => s_Dout
         );
 
-    -- Clock generation process
     clk_process : PROCESS
     BEGIN
         WHILE TRUE LOOP
@@ -52,52 +50,42 @@ BEGIN
         END LOOP;
     END PROCESS;
 
-    -- Test sequence process
     stimulus_process : PROCESS
     BEGIN
-        -- Enable memory
         s_CS_n <= '0';
 
-        -- Write value to address 0
         s_RW_n <= '0';
-        s_addr <= 0;
-        s_Din  <= "00001111";
+        s_addr <= std_logic_vector(to_unsigned(0, M));
+        s_Din  <= "0001";
         WAIT FOR s_setup_time;
         WAIT FOR s_clk_period;
 
-        -- Write value to address 1
-        s_addr <= 1;
-        s_Din  <= "10101010";
+        s_addr <= std_logic_vector(to_unsigned(1, M));
+        s_Din  <= "0010";
         WAIT FOR s_setup_time;
         WAIT FOR s_clk_period;
 
-        -- Write value to address 2
-        s_addr <= 2;
-        s_Din  <= "11110000";
+        s_addr <= std_logic_vector(to_unsigned(2, M));
+        s_Din  <= "0100";
         WAIT FOR s_setup_time;
         WAIT FOR s_clk_period;
 
-        -- Switch to read mode
         s_RW_n <= '1';
         s_OE   <= '1';
 
-        -- Read from address 0
-        s_addr <= 0;
+        s_addr <= std_logic_vector(to_unsigned(0, M));
         WAIT FOR s_clk_period;
 
-        -- Read from address 1
-        s_addr <= 1;
+        s_addr <= std_logic_vector(to_unsigned(1, M));
         WAIT FOR s_clk_period;
 
-        -- Read from address 2
-        s_addr <= 2;
+        s_addr <= std_logic_vector(to_unsigned(2, M));
         WAIT FOR s_clk_period;
 
-        -- Disable memory
         s_CS_n <= '1';
         s_OE   <= '0';
 
         WAIT;
     END PROCESS;
 
-END RAM_2pMxNbits_arch;
+END ram_2pmxnbits_tb_arch;
