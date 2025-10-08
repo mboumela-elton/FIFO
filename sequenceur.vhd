@@ -22,22 +22,17 @@ ENTITY sequenceur IS
 END sequenceur;
 
 ARCHITECTURE archi_Mealy OF sequenceur IS
-
-TYPE state IS (Repos, Lecture1, Ecriture, Attente, Lecture2);
-SIGNAL etat, etat_suivant : state;
+    TYPE state IS (Repos, Lecture1, Ecriture, Attente, Lecture2);
+    SIGNAL etat : state;
 
 BEGIN
-PROCESS (CLK)
+
+PROCESS (CLK, RESET)
 BEGIN
     IF (RESET = '1') THEN
         etat <= Repos;
-    ELSIF (rising_edge(CLK)) THEN
-        etat <= etat_suivant;
     END IF;
-END PROCESS;
 
-PROCESS (etat, ENREAD, ENWRITE, REQ)
-BEGIN
     CASE etat IS
         WHEN Repos =>
             ACK      <= '1';
@@ -49,11 +44,11 @@ BEGIN
             SELREAD  <= '1';
             CS_n     <= '1';
             IF (REQ = '0' AND ENWRITE = '1') THEN
-                etat_suivant <= Ecriture;
+                etat <= Ecriture;
             ELSIF (ENREAD = '1') THEN
-                etat_suivant <= Lecture1;
+                etat <= Lecture1;
             ELSE
-                etat_suivant <= Repos;
+                etat <= Repos;
             END IF;
 
         WHEN Lecture1 =>
@@ -66,7 +61,7 @@ BEGIN
             SELREAD  <= '1';
             CS_n     <= '0';
             
-            etat_suivant <= Repos;
+            etat <= Repos;
 
         WHEN Ecriture =>
             ACK      <= '0';
@@ -78,7 +73,7 @@ BEGIN
             SELREAD  <= '0';
             CS_n     <= '0';
             
-            etat_suivant <= Attente;
+            etat <= Attente;
 
         WHEN Attente =>
             ACK      <= '0';
@@ -90,11 +85,11 @@ BEGIN
             SELREAD  <= '1';
             CS_n     <= '0';
             IF (REQ = '1' AND ENWRITE = '0') THEN
-                etat_suivant <= Repos;
+                etat <= Repos;
             ELSIF (ENREAD = '1') THEN
-                etat_suivant <= Lecture2;
+                etat <= Lecture2;
             ELSIF (REQ = '0' AND ENWRITE = '0') THEN
-                etat_suivant <= Attente;
+                etat <= Attente;
             END IF;
 
         WHEN Lecture2 =>
@@ -106,7 +101,7 @@ BEGIN
             HL       <= '1';
             SELREAD  <= '1';
             CS_n     <= '0';
-            etat_suivant <= Attente;
+            etat <= Attente;
     END CASE;
 END PROCESS;
 
@@ -114,48 +109,43 @@ END archi_Mealy;
 
 ARCHITECTURE archi_Moore OF sequenceur IS
     TYPE state IS (Repos, Lecture1, Ecriture, Attente, Lecture2);
-    SIGNAL etat, etat_suivant : state;
+    SIGNAL etat : state;
 
 BEGIN
-PROCESS (CLK)
+
+PROCESS (CLK, RESET)
 BEGIN
     IF (RESET = '1') THEN
         etat <= Repos;
-    ELSIF (rising_edge(CLK)) THEN
-        etat <= etat_suivant;
     END IF;
-END PROCESS;
 
-PROCESS (etat, ENREAD, ENWRITE, REQ)
-BEGIN
-etat_suivant <= etat;  -- valeur par défaut
     CASE etat IS
         WHEN Repos =>
             IF (REQ = '0' AND ENWRITE = '1') THEN
-                etat_suivant <= Ecriture;
+                etat <= Ecriture;
             ELSIF (ENREAD = '1') THEN
-                etat_suivant <= Lecture1;
+                etat <= Lecture1;
             ELSE
-                etat_suivant <= Repos;
+                etat <= Repos;
             END IF;
 
         WHEN Lecture1 =>
-            etat_suivant <= Repos;
+            etat <= Repos;
 
         WHEN Ecriture =>
-            etat_suivant <= Attente;
+            etat <= Attente;
 
         WHEN Attente =>
             IF (REQ = '1' AND ENWRITE = '0') THEN
-                etat_suivant <= Repos;
+                etat <= Repos;
             ELSIF (ENREAD = '1') THEN
-                etat_suivant <= Lecture2;
+                etat <= Lecture2;
             ELSIF (REQ = '0' AND ENWRITE = '0') THEN
-                etat_suivant <= Attente;
+                etat <= Attente;
             END IF;
 
         WHEN Lecture2 =>
-            etat_suivant <= Attente;
+            etat <= Attente;
     END CASE;
 END PROCESS;
 

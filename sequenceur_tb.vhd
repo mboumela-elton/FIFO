@@ -37,7 +37,7 @@ ARCHITECTURE sequenceur_tb_arch OF sequenceur_tb IS
       ENREAD  : in STD_LOGIC ); 
   END COMPONENT ; 
 BEGIN
-  DUT  : sequenceur  
+  DUT : sequenceur  
     PORT MAP ( 
       REQ   => REQ  ,
       SELREAD   => SELREAD  ,
