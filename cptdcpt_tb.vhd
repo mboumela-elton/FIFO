@@ -5,7 +5,7 @@ USE work.my_package.ALL ;
 
 ENTITY cptdcpt_tb  IS 
   GENERIC (
-    M  : INTEGER   := 8 ); 
+    M  : INTEGER   := 16 ); 
 END ; 
  
 ARCHITECTURE cptdcpt_tb_arch OF cptdcpt_tb IS

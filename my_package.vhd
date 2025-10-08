@@ -25,7 +25,6 @@ PACKAGE my_package IS
             N : INTEGER
         );
         PORT (
-            clk   : IN  STD_LOGIC;
             CS_n  : IN  STD_LOGIC;
             RW_n  : IN  STD_LOGIC;
             OE    : IN  STD_LOGIC;
@@ -48,7 +47,7 @@ PACKAGE my_package IS
 
     COMPONENT cptdcpt
         GENERIC (
-            M : integer := 4
+            M : integer := 8
         );
         PORT (
             RESET    : in  std_logic;
@@ -61,7 +60,7 @@ PACKAGE my_package IS
 
     COMPONENT genaddr
     GENERIC (
-        M : integer := 4  -- largeur de l'adresse
+        M : integer := 16  -- largeur de l'adresse
     );
     PORT (
         RESET       : in  std_logic;
