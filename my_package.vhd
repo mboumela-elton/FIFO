@@ -129,6 +129,24 @@ PACKAGE my_package IS
         CS_n     : OUT STD_LOGIC
     );
     END COMPONENT sequenceur;
+    
+    COMPONENT FIFO
+    generic (
+        M : integer := 8;
+        N : integer := 4 
+    );
+    port (
+        clk        : in  std_logic;
+        reset      : in  std_logic;
+        req        : in  std_logic;
+        data_in    : in  std_logic_vector(N-1 downto 0);
+        data_out   : out std_logic_vector(N-1 downto 0);
+        ack        : out std_logic;
+        fast       : out std_logic;
+        slow       : out std_logic;
+        hl         : out std_logic
+    );
+    end COMPONENT;
 
 END my_package;
 -------------------------------------------------------------------------
@@ -202,7 +220,7 @@ begin
 				wait;
 			end if;
 	end if;
-	end loop;	
+    end loop;	
 end check_setup;
 
 procedure check_hold(

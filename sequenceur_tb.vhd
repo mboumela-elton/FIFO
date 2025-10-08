@@ -2,23 +2,24 @@ LIBRARY ieee  ;
 LIBRARY work  ; 
 USE ieee.std_logic_1164.all  ; 
 USE work.my_package.all  ; 
+
 ENTITY sequenceur_tb  IS 
 END ; 
  
 ARCHITECTURE sequenceur_tb_arch OF sequenceur_tb IS
-  SIGNAL REQ   :  STD_LOGIC  ; 
-  SIGNAL SELREAD   :  STD_LOGIC  ; 
-  SIGNAL CS_n   :  STD_LOGIC  ; 
-  SIGNAL RESET   :  STD_LOGIC  ; 
-  SIGNAL HL   :  STD_LOGIC  ; 
-  SIGNAL INCWRITE   :  STD_LOGIC  ; 
-  SIGNAL ACK   :  STD_LOGIC  ; 
-  SIGNAL CLK   :  STD_LOGIC  ; 
-  SIGNAL OE   :  STD_LOGIC  ; 
-  SIGNAL ENWRITE   :  STD_LOGIC  ; 
-  SIGNAL RW_n   :  STD_LOGIC  ; 
-  SIGNAL INCREAD   :  STD_LOGIC  ; 
-  SIGNAL ENREAD   :  STD_LOGIC  ; 
+  SIGNAL REQ          :  STD_LOGIC  ; 
+  SIGNAL SELREAD      :  STD_LOGIC  ; 
+  SIGNAL CS_n         :  STD_LOGIC  ; 
+  SIGNAL RESET        :  STD_LOGIC  ; 
+  SIGNAL HL           :  STD_LOGIC  ; 
+  SIGNAL INCWRITE     :  STD_LOGIC  ; 
+  SIGNAL ACK          :  STD_LOGIC  ; 
+  SIGNAL CLK          :  STD_LOGIC  ; 
+  SIGNAL OE           :  STD_LOGIC  ; 
+  SIGNAL ENWRITE      :  STD_LOGIC  ; 
+  SIGNAL RW_n         :  STD_LOGIC  ; 
+  SIGNAL INCREAD      :  STD_LOGIC  ; 
+  SIGNAL ENREAD       :  STD_LOGIC  ; 
   COMPONENT sequenceur  
     PORT ( 
       REQ  : in STD_LOGIC ; 

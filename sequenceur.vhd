@@ -41,13 +41,13 @@ BEGIN
     CASE etat IS
         WHEN Repos =>
             ACK      <= '1';
-            RW_n     <= '1';
+            RW_n     <= '0';
             OE       <= '0';
             INCWRITE <= '0';
             INCREAD  <= '0';
             HL       <= '0';
             SELREAD  <= '1';
-            CS_n     <= '0';
+            CS_n     <= '1';
             IF (REQ = '0' AND ENWRITE = '1') THEN
                 etat_suivant <= Ecriture;
             ELSIF (ENREAD = '1') THEN
@@ -64,7 +64,7 @@ BEGIN
             INCREAD  <= '1';
             HL       <= '1';
             SELREAD  <= '1';
-            CS_n     <= '1';
+            CS_n     <= '0';
             
             etat_suivant <= Repos;
 
@@ -76,13 +76,13 @@ BEGIN
             INCREAD  <= '0';
             HL       <= '0';
             SELREAD  <= '0';
-            CS_n     <= '1';
+            CS_n     <= '0';
             
             etat_suivant <= Attente;
 
         WHEN Attente =>
             ACK      <= '0';
-            RW_n     <= '1';
+            RW_n     <= '0';
             OE       <= '0';
             INCWRITE <= '0';
             INCREAD  <= '0';
@@ -103,9 +103,9 @@ BEGIN
             OE       <= '1';
             INCWRITE <= '0';
             INCREAD  <= '1';
-            HL       <= '0';
+            HL       <= '1';
             SELREAD  <= '1';
-            CS_n     <= '1';
+            CS_n     <= '0';
             etat_suivant <= Attente;
     END CASE;
 END PROCESS;
@@ -164,13 +164,13 @@ BEGIN
 CASE etat IS
     WHEN Repos =>
         ACK      <= '1';
-        RW_n     <= '1';
+        RW_n     <= '0';
         OE       <= '0';
         INCWRITE <= '0';
         INCREAD  <= '0';
         HL       <= '0';
         SELREAD  <= '1';
-        CS_n     <= '0';
+        CS_n     <= '1';
 
     WHEN Lecture1 =>
         ACK      <= '1';
@@ -180,7 +180,7 @@ CASE etat IS
         INCREAD  <= '1';
         HL       <= '1';
         SELREAD  <= '1';
-        CS_n     <= '1';
+        CS_n     <= '0';
 
     WHEN Ecriture =>
         ACK      <= '0';
@@ -190,17 +190,17 @@ CASE etat IS
         INCREAD  <= '0';
         HL       <= '0';
         SELREAD  <= '0';
-        CS_n     <= '1';
+        CS_n     <= '0';
 
     WHEN Attente =>
         ACK      <= '0';
-        RW_n     <= '1';
+        RW_n     <= '0';
         OE       <= '0';
         INCWRITE <= '0';
         INCREAD  <= '0';
         HL       <= '0';
         SELREAD  <= '1';
-        CS_n     <= '0';
+        CS_n     <= '1';
 
     WHEN Lecture2 =>
         ACK      <= '0';
@@ -208,9 +208,9 @@ CASE etat IS
         OE       <= '1';
         INCWRITE <= '0';
         INCREAD  <= '1';
-        HL       <= '0';
+        HL       <= '1';
         SELREAD  <= '1';
-        CS_n     <= '1';
+        CS_n     <= '0';
 END CASE;
 END PROCESS;
 
