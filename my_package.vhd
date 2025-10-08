@@ -25,7 +25,6 @@ PACKAGE my_package IS
             N : INTEGER
         );
         PORT (
-            clk   : IN  STD_LOGIC;
             CS_n  : IN  STD_LOGIC;
             RW_n  : IN  STD_LOGIC;
             OE    : IN  STD_LOGIC;
@@ -48,7 +47,7 @@ PACKAGE my_package IS
 
     COMPONENT cptdcpt
         GENERIC (
-            M : integer := 4
+            M : integer := 8
         );
         PORT (
             RESET    : in  std_logic;
@@ -61,7 +60,7 @@ PACKAGE my_package IS
 
     COMPONENT genaddr
     GENERIC (
-        M : integer := 4  -- largeur de l'adresse
+        M : integer := 16  -- largeur de l'adresse
     );
     PORT (
         RESET       : in  std_logic;
@@ -129,6 +128,24 @@ PACKAGE my_package IS
         CS_n     : OUT STD_LOGIC
     );
     END COMPONENT sequenceur;
+    
+    COMPONENT FIFO
+    generic (
+        M : integer := 8;
+        N : integer := 4 
+    );
+    port (
+        clk        : in  std_logic;
+        reset      : in  std_logic;
+        req        : in  std_logic;
+        data_in    : in  std_logic_vector(N-1 downto 0);
+        data_out   : out std_logic_vector(N-1 downto 0);
+        ack        : out std_logic;
+        fast       : out std_logic;
+        slow       : out std_logic;
+        hl         : out std_logic
+    );
+    end COMPONENT;
 
 END my_package;
 -------------------------------------------------------------------------

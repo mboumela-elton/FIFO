@@ -48,9 +48,9 @@ BEGIN
   BEGIN
     WHILE TRUE LOOP
       clk <= '0';
-      WAIT FOR 10 ns;
+      WAIT FOR 5 ns;
       clk <= '1';
-      WAIT FOR 10 ns;
+      WAIT FOR 5 ns;
     END LOOP;
   END PROCESS;
 
@@ -60,14 +60,14 @@ BEGIN
     -- Initialisation
     reset <= '1';
     req   <= '0';
-    data_in <= (OTHERS => '0');
-    WAIT FOR 40 ns;
-
-    reset <= '0';
+    data_in <= (OTHERS => '1');
     WAIT FOR 20 ns;
 
+    reset <= '0';
+    WAIT FOR 10 ns;
+
     -- Envoi de données
-    data_in <= "0001";
+    data_in <= "0011";
     req <= '1';
     WAIT FOR 20 ns;
 
