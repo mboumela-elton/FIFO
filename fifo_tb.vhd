@@ -61,10 +61,10 @@ BEGIN
     reset <= '1';
     req   <= '0';
     data_in <= (OTHERS => '1');
-    WAIT FOR 20 ns;
+    WAIT FOR 2000 ns;
 
     reset <= '0';
-    WAIT FOR 10 ns;
+    WAIT FOR 20 ns;
 
     -- Envoi de données
     data_in <= "0011";
