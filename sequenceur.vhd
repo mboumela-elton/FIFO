@@ -21,7 +21,7 @@ ENTITY sequenceur IS
     );
 END sequenceur;
 
-ARCHITECTURE archi_Mealy OF sequenceur IS
+ARCHITECTURE archi_Moore_sync OF sequenceur IS
     TYPE state IS (Repos, Lecture1, Ecriture, Attente, Lecture2);
     SIGNAL etat : state;
 
@@ -105,9 +105,9 @@ BEGIN
     END CASE;
 END PROCESS;
 
-END archi_Mealy;
+END archi_Moore_sync;
 
-ARCHITECTURE archi_Moore OF sequenceur IS
+ARCHITECTURE archi_Moore_imm OF sequenceur IS
     TYPE state IS (Repos, Lecture1, Ecriture, Attente, Lecture2);
     SIGNAL etat : state;
 
@@ -204,4 +204,233 @@ CASE etat IS
 END CASE;
 END PROCESS;
 
-END archi_Moore;
+END archi_Moore_imm;
+
+ARCHITECTURE archi_Mealy_sync OF sequenceur IS
+    TYPE state IS (Repos, Lecture1, Ecriture, Attente, Lecture2);
+    SIGNAL etat : state;
+
+BEGIN
+
+PROCESS (CLK, RESET)
+BEGIN
+    IF (RESET = '1') THEN
+        etat <= Repos;
+    END IF;
+
+    CASE etat IS
+        WHEN Repos =>
+            IF (REQ = '0' AND ENWRITE = '1') THEN
+                etat <= Ecriture;
+                ACK      <= '0';
+                RW_n     <= '0';
+                OE       <= '0';
+                INCWRITE <= '1';
+                INCREAD  <= '0';
+                HL       <= '0';
+                SELREAD  <= '0';
+                CS_n     <= '0';
+
+            ELSIF (ENREAD = '1') THEN
+                etat <= Lecture1;
+                ACK      <= '1';
+                RW_n     <= '1';
+                OE       <= '1';
+                INCWRITE <= '0';
+                INCREAD  <= '1';
+                HL       <= '1';
+                SELREAD  <= '1';
+                CS_n     <= '0';
+
+            ELSE
+                etat <= Repos;
+                ACK      <= '1';
+                RW_n     <= '0';
+                OE       <= '0';
+                INCWRITE <= '0';
+                INCREAD  <= '0';
+                HL       <= '0';
+                SELREAD  <= '1';
+                CS_n     <= '1';
+
+            END IF;
+
+        WHEN Lecture1 =>
+            etat <= Repos;
+            ACK      <= '1';
+            RW_n     <= '0';
+            OE       <= '0';
+            INCWRITE <= '0';
+            INCREAD  <= '0';
+            HL       <= '0';
+            SELREAD  <= '1';
+            CS_n     <= '1';
+
+        WHEN Ecriture =>
+            etat <= Attente;
+            ACK      <= '0';
+            RW_n     <= '0';
+            OE       <= '0';
+            INCWRITE <= '0';
+            INCREAD  <= '0';
+            HL       <= '0';
+            SELREAD  <= '1';
+            CS_n     <= '1';
+
+        WHEN Attente =>
+            IF (REQ = '1' AND ENWRITE = '0') THEN
+                etat <= Repos;
+                ACK      <= '1';
+                RW_n     <= '0';
+                OE       <= '0';
+                INCWRITE <= '0';
+                INCREAD  <= '0';
+                HL       <= '0';
+                SELREAD  <= '1';
+                CS_n     <= '1';
+
+            ELSIF (ENREAD = '1') THEN
+                etat <= Lecture2;
+                ACK      <= '0';
+                RW_n     <= '1';
+                OE       <= '1';
+                INCWRITE <= '0';
+                INCREAD  <= '1';
+                HL       <= '1';
+                SELREAD  <= '1';
+                CS_n     <= '0';
+
+            ELSIF (REQ = '0' AND ENWRITE = '0') THEN
+                etat <= Attente;
+                ACK      <= '0';
+                RW_n     <= '0';
+                OE       <= '0';
+                INCWRITE <= '0';
+                INCREAD  <= '0';
+                HL       <= '0';
+                SELREAD  <= '1';
+                CS_n     <= '1';
+            END IF;
+
+        WHEN Lecture2 =>
+            etat <= Attente;
+            ACK      <= '0';
+            RW_n     <= '0';
+            OE       <= '0';
+            INCWRITE <= '0';
+            INCREAD  <= '0';
+            HL       <= '0';
+            SELREAD  <= '1';
+            CS_n     <= '1';
+    END CASE;
+END PROCESS;
+END archi_Mealy_sync;
+
+ARCHITECTURE archi_Mealy_imm OF sequenceur IS
+    TYPE state IS (Repos, Lecture1, Ecriture, Attente, Lecture2);
+    SIGNAL etat : state;
+
+BEGIN
+
+PROCESS (CLK, RESET)
+BEGIN
+    IF (RESET = '1') THEN
+        etat <= Repos;
+    END IF;
+
+    CASE etat IS
+        WHEN Repos =>
+            IF (REQ = '0' AND ENWRITE = '1') THEN
+                etat <= Ecriture;
+            ELSIF (ENREAD = '1') THEN
+                etat <= Lecture1;
+            ELSE
+                etat <= Repos;
+            END IF;
+
+        WHEN Lecture1 =>
+            etat <= Repos;
+
+        WHEN Ecriture =>
+            etat <= Attente;
+
+        WHEN Attente =>
+            IF (REQ = '1' AND ENWRITE = '0') THEN
+                etat <= Repos;
+            ELSIF (ENREAD = '1') THEN
+                etat <= Lecture2;
+            ELSIF (REQ = '0' AND ENWRITE = '0') THEN
+                etat <= Attente;
+            END IF;
+
+        WHEN Lecture2 =>
+            etat <= Attente;
+    END CASE;
+END PROCESS;
+
+PROCESS (etat, RESET)
+BEGIN
+IF (RESET = '1') THEN
+        ACK      <= '1';
+        RW_n     <= '0';
+        OE       <= '0';
+        INCWRITE <= '0';
+        INCREAD  <= '0';
+        HL       <= '0';
+        SELREAD  <= '1';
+        CS_n     <= '1';
+    END IF;
+
+    CASE etat IS
+        WHEN Repos =>
+            ACK      <= '1';
+            RW_n     <= '0';
+            OE       <= '0';
+            INCWRITE <= '0';
+            INCREAD  <= '0';
+            HL       <= '0';
+            SELREAD  <= '1';
+            CS_n     <= '1';
+
+        WHEN Lecture1 =>
+            ACK      <= '1';
+            RW_n     <= '1';
+            OE       <= '1';
+            INCWRITE <= '0';
+            INCREAD  <= '1';
+            HL       <= '1';
+            SELREAD  <= '1';
+            CS_n     <= '0';
+
+        WHEN Ecriture =>
+            ACK      <= '0';
+            RW_n     <= '0';
+            OE       <= '0';
+            INCWRITE <= '1';
+            INCREAD  <= '0';
+            HL       <= '0';
+            SELREAD  <= '0';
+            CS_n     <= '0';
+
+        WHEN Attente =>
+            ACK      <= '0';
+            RW_n     <= '0';
+            OE       <= '0';
+            INCWRITE <= '0';
+            INCREAD  <= '0';
+            HL       <= '0';
+            SELREAD  <= '1';
+            CS_n     <= '1';
+
+        WHEN Lecture2 =>
+            ACK      <= '0';
+            RW_n     <= '1';
+            OE       <= '1';
+            INCWRITE <= '0';
+            INCREAD  <= '1';
+            HL       <= '1';
+            SELREAD  <= '1';
+            CS_n     <= '0';
+    END CASE;
+END PROCESS;
+END archi_Mealy_imm;
