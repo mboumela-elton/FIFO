@@ -57,28 +57,35 @@ BEGIN
   -- Séquence de test
   stimulus_process : PROCESS
   BEGIN
-    -- Initialisation
-    reset <= '1';
-    req   <= '0';
-    data_in <= (OTHERS => '1');
-    WAIT FOR 20 ns;
-
     reset <= '0';
-    WAIT FOR 10 ns;
-
-    -- Envoi de données
-    data_in <= "0011";
-    req <= '1';
-    WAIT FOR 20 ns;
-
-    data_in <= "0010";
-    WAIT FOR 20 ns;
-
     data_in <= "0100";
     WAIT FOR 20 ns;
+    req   <= '0';
+    WAIT FOR 20 ns;
+    req   <= '0';
 
-    req <= '0';
-    WAIT FOR 100 ns;
+    data_in <= "0110";
+    WAIT FOR 20 ns;
+    req   <= '0';
+    
+    data_in <= "0111";
+    WAIT FOR 20 ns;
+    req   <= '0';
+    
+
+    -- Envoi de données
+    --data_in <= "0011";
+    --req <= '0';
+    --WAIT FOR 20 ns;
+
+    --data_in <= "0010";
+    --WAIT FOR 20 ns;
+
+    --data_in <= "0100";
+    --WAIT FOR 20 ns;
+
+    ---req <= '0';
+    --WAIT FOR 100 ns;
 
     -- Fin du test
     WAIT;
