@@ -22,13 +22,14 @@ PACKAGE my_package IS
     COMPONENT ram_2pmxnbits
         GENERIC (
             M : INTEGER;
-            N : INTEGER
+            N : INTEGER;
+            AW: INTEGER := 3
         );
         PORT (
             CS_n  : IN  STD_LOGIC;
             RW_n  : IN  STD_LOGIC;
             OE    : IN  STD_LOGIC;
-            addr  : IN  STD_LOGIC_VECTOR(M-1 DOWNTO 0);
+            addr  : IN  STD_LOGIC_VECTOR(AW-1 DOWNTO 0);
             Din   : IN  STD_LOGIC_VECTOR(N-1 DOWNTO 0);
             Dout  : OUT STD_LOGIC_VECTOR(N-1 DOWNTO 0)
         );
@@ -36,11 +37,14 @@ PACKAGE my_package IS
     
     
     COMPONENT genhl
+    GENERIC (
+        M : integer := 8
+    );
     PORT (
-        reset    : IN  STD_LOGIC;
-        clk      : IN  STD_LOGIC;
-        enread   : OUT STD_LOGIC;
-        enwrite  : OUT STD_LOGIC
+        RESET    : IN  STD_LOGIC;
+        CLK      : IN  STD_LOGIC;
+        ENREAD   : OUT STD_LOGIC;
+        ENWRITE  : OUT STD_LOGIC
     );
     END COMPONENT;
 
@@ -50,8 +54,8 @@ PACKAGE my_package IS
             M : integer := 8
         );
         PORT (
-            RESET    : in  std_logic;
             CLK      : in  std_logic;
+            RESET    : in  std_logic;
             ENABLE   : in  std_logic;
             UD       : in  std_logic;
             Q        : out std_logic_vector(M-1 downto 0)
@@ -60,7 +64,7 @@ PACKAGE my_package IS
 
     COMPONENT genaddr
     GENERIC (
-        M : integer := 16  -- largeur de l'adresse
+        M : integer := 4  -- largeur de l'adresse (par défaut)
     );
     PORT (
         RESET       : in  std_logic;
@@ -72,18 +76,18 @@ PACKAGE my_package IS
     );
     END COMPONENT genaddr;
     
-    COMPONENT fastslow
-    GENERIC (
-            M  : INTEGER
-        );  
-    PORT ( 
-      slow  : out STD_LOGIC ; 
-      incwrite  : in STD_LOGIC ; 
-      fast  : out STD_LOGIC ; 
-      clk  : in STD_LOGIC ; 
-      incread  : in STD_LOGIC ; 
-      reset  : in STD_LOGIC ); 
-    END COMPONENT ;
+        COMPONENT fastslow
+        GENERIC (
+                        M  : INTEGER := 8
+                );  
+        PORT ( 
+            incread   : IN  STD_LOGIC ;
+            incwrite  : IN  STD_LOGIC ;
+            clk       : IN  STD_LOGIC ; 
+            reset     : IN  STD_LOGIC ;
+            fast      : OUT STD_LOGIC ; 
+            slow      : OUT STD_LOGIC ); 
+        END COMPONENT ;
 
     COMPONENT complement_a_2
     GENERIC (

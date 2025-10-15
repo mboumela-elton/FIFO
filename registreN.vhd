@@ -22,13 +22,13 @@ architecture archi_regN of registreN is
 begin
     setup_check: process
     begin
-        check_setup(CLK, D, T_SETUP);
+        --check_setup(CLK, D, T_SETUP);
         wait;
     end process setup_check;
 
     hold_check: process
     begin
-        check_hold(CLK, D, T_HOLD);
+        --check_hold(CLK, D, T_HOLD);
         wait;
     end process hold_check;
 

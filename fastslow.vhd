@@ -5,7 +5,7 @@ USE work.my_package.ALL;
 
 ENTITY fastslow IS
     GENERIC (
-            M  : INTEGER
+            M  : INTEGER := 8
         );
     PORT (
         incread   : IN  STD_LOGIC;
@@ -21,7 +21,7 @@ ARCHITECTURE behavior OF fastslow IS
 
     SIGNAL enable : STD_LOGIC := '0';
     SIGNAL ud     : STD_LOGIC := '0';
-    SIGNAL cptr   : STD_LOGIC_VECTOR(7 DOWNTO 0);  -- M = 8
+    SIGNAL cptr   : STD_LOGIC_VECTOR(M-1 DOWNTO 0);
 
 BEGIN
 
@@ -42,10 +42,11 @@ BEGIN
     enable <= incwrite OR incread;
     ud     <= incwrite;  -- '1' for increment, '0' for decrement
 
-    -- FAST signal: active if number of words < 2^M - 2 ? bit M-2 = '0'
-    fast <= NOT cptr(M-2);  -- M = 8 ? M-2 = 6
+    -- FAST/SLOW driven from bit M-2 of the counter when M >= 2.
+    -- If M < 2, default to safe values.
+    fast <= '0' when M < 2 else NOT cptr(M-2);
+    slow <= '0' when M < 2 else cptr(M-2);
 
     -- SLOW signal: active if number of words ? 2^M - 2^(M-2) ? bit M-2 = '1'
-    slow <= cptr(M-2);
 
 END behavior;

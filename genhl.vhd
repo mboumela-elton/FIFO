@@ -7,7 +7,7 @@ entity genhl is
     generic (
         M : integer := 8  -- Largeur du compteur (doit être >= log2(200) = 8)
     );
-    port (
+    port(
         RESET    : in  std_logic;
         CLK      : in  std_logic;
         ENREAD   : out std_logic;
