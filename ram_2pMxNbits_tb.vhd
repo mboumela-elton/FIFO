@@ -8,16 +8,16 @@ end ram_2pmxnbits_tb;
 
 architecture tb_arch of ram_2pmxnbits_tb is
 
-    constant M      : integer := 8;  -- profondeur mémoire
+    constant M      : integer := 8;  -- profondeur mï¿½moire
     constant N      : integer := 4;  -- largeur d?un mot
-    constant DEPTH  : integer := 3;
+    constant DEPTH  : integer := 3; -- largeur d'adresse (AW)
     constant clk_period : time := 10 ns;
 
     signal clk    : std_logic := '0';
     signal CS_n   : std_logic := '1';
     signal RW_n   : std_logic := '1';
     signal OE     : std_logic := '0';
-    signal addr   : std_logic_vector(M-1 downto 0) := (others => '0');
+    signal addr   : std_logic_vector(DEPTH-1 downto 0) := (others => '0');
     signal Din    : std_logic_vector(N-1 downto 0) := (others => '0');
     signal Dout   : std_logic_vector(N-1 downto 0);
 
@@ -27,7 +27,8 @@ begin
     DUT : ram_2pmxnbits
         generic map (
             M => M,
-            N => N
+            N => N,
+            AW => DEPTH
         )
         port map (
             CS_n  => CS_n,
@@ -38,7 +39,7 @@ begin
             Dout  => Dout
         );
 
-    -- Génération de l?horloge (inutile ici mais conservée si besoin futur)
+    -- Gï¿½nï¿½ration de l?horloge (inutile ici mais conservï¿½e si besoin futur)
     clk_process : process
     begin
         while true loop
@@ -49,18 +50,18 @@ begin
         end loop;
     end process;
 
-    -- Stimulus : écriture puis lecture
+    -- Stimulus : ï¿½criture puis lecture
     stimulus_process : process
     begin
         -- Initialisation
         CS_n <= '0';  -- activer la RAM
-        RW_n <= '0';  -- mode écriture
-        OE   <= '0';  -- désactiver la sortie
+        RW_n <= '0';  -- mode ï¿½criture
+        OE   <= '0';  -- dï¿½sactiver la sortie
 
-        -- Phase d?écriture
+        -- Phase d?ï¿½criture
         for i in 0 to DEPTH-1 loop
-            addr <= std_logic_vector(to_unsigned(i, M));
-            Din  <= std_logic_vector(to_unsigned(i + 1, N));  -- données = i+1
+            addr <= std_logic_vector(to_unsigned(i, DEPTH));
+            Din  <= std_logic_vector(to_unsigned(i + 1, N));  -- donnï¿½es = i+1
             wait for clk_period;
         end loop;
 
@@ -69,13 +70,13 @@ begin
         OE   <= '1';  -- activer la sortie
 
         for i in 0 to DEPTH-1 loop
-            addr <= std_logic_vector(to_unsigned(i, M));
+            addr <= std_logic_vector(to_unsigned(i, DEPTH));
             wait for clk_period;
         end loop;
 
         -- Fin du test
-        CS_n <= '1';  -- désactiver la RAM
-        OE   <= '0';  -- désactiver la sortie
+        CS_n <= '1';  -- dï¿½sactiver la RAM
+        OE   <= '0';  -- dï¿½sactiver la sortie
 
         wait;
     end process;

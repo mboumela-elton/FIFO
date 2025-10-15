@@ -5,8 +5,8 @@ use work.my_package.all;
 
 entity FIFO is
     generic (
-        M : integer := 16; -- profondeur mémoire (nombre de mots)
-        N : integer := 8   -- largeur des données
+        M : integer := 16; -- profondeur mï¿½moire (nombre de mots)
+        N : integer := 8   -- largeur des donnï¿½es
     );
     port (
         clk        : in  std_logic;
@@ -27,7 +27,19 @@ architecture RTL of FIFO is
     signal enread, enwrite, SELREAD : std_logic;
     signal RW_n, OE, CS_n : std_logic;
     signal INCWRITE, INCREAD : std_logic;
-    signal addr            : std_logic_vector(M-1 downto 0);
+    function clog2(n : natural) return natural is
+        variable v : natural := n - 1;
+        variable r : natural := 0;
+    begin
+        while v > 0 loop
+            v := v / 2;
+            r := r + 1;
+        end loop;
+        return r;
+    end function;
+
+    constant ADDR_W : integer := clog2(M);
+    signal addr            : std_logic_vector(ADDR_W-1 downto 0);
     signal reg_out         : std_logic_vector(N-1 downto 0);
     signal cpl2_out        : std_logic_vector(N-1 downto 0);
 
@@ -43,7 +55,7 @@ begin
             Q     => reg_out
         );
 
-    -- Complément à deux (optionnel selon usage)
+    -- Complï¿½ment ï¿½ deux (optionnel selon usage)
     U2: complement_a_2
         generic map (N => N)
         port map (
@@ -51,7 +63,7 @@ begin
             sortie => cpl2_out
         );
     
-    -- Générateur des signaux ENREAD et ENWRITE
+    -- Gï¿½nï¿½rateur des signaux ENREAD et ENWRITE
     U3: genhl
         port map (
             clk      => clk,
@@ -60,7 +72,7 @@ begin
             enwrite  => enwrite
         );
         
-    -- Séquenceur
+    -- Sï¿½quenceur
     U4: sequenceur
         port map (
             CLK      => clk,
@@ -78,22 +90,22 @@ begin
             CS_n     => CS_n
         );
         
-    -- Générateur de rythme lecture/écriture
+    -- Gï¿½nï¿½rateur de rythme lecture/ï¿½criture
     U5: fastslow
-        generic map (M => M)
+        generic map (M => ADDR_W)
         port map (
-            clk       => clk,
-            reset     => reset,
             incread   => INCREAD,
             incwrite  => INCWRITE,
+            clk       => clk,
+            reset     => reset,
             fast      => fast,
             slow      => slow
         );
 
 
-    -- Générateur d'adresse
+    -- Gï¿½nï¿½rateur d'adresse
     U6: genaddr
-        generic map (M => M)
+        generic map (M => ADDR_W)
         port map (
             CLK         => clk,
             RESET       => reset,
@@ -103,9 +115,9 @@ begin
             Addrgen     => addr
         );
 
-    -- Mémoire RAM FIFO
+    -- Mï¿½moire RAM FIFO
     U7: ram_2pmxnbits
-        generic map (M => M, N => N)
+        generic map (M => M, N => N, AW => ADDR_W)
         port map (
             CS_n  => CS_n,
             RW_n  => RW_n,
